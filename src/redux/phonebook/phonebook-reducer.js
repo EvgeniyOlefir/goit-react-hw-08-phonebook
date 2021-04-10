@@ -12,7 +12,7 @@ import {
   deleteContactError,
   changeFilter,
   clearError,
-} from './actions';
+} from './phonebook-actions';
 
 const initialState = {
   contacts: [],

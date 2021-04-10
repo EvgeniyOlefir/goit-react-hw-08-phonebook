@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import operations from '../../redux/operations';
-import selectors from '../../redux/selectors';
+import operations from '../../redux/phonebook/phonebook-operations';
+import selectors from '../../redux/phonebook/phonebook-selectors';
 import PropTypes from 'prop-types';
 
 import s from './ContactForm.module.css';

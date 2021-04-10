@@ -1,11 +1,19 @@
 import React, { Component } from 'react';
+import { Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-import ContactForm from './components/ContactForm';
-import ContactList from './components/ContactList';
-import Filter from './components/Filter/index';
-import operations from './redux/operations';
-import selectors from './redux/selectors';
-import s from './App.module.css';
+// import ContactForm from './components/ContactForm';
+// import ContactList from './components/ContactList';
+// import Filter from './components/Filter/index';
+import operations from './redux/phonebook/phonebook-operations';
+import selectors from './redux/phonebook/phonebook-selectors';
+import HomePage from './pages/HomePage';
+import RegisterPage from './pages/RegisterPage';
+import LoginPage from './pages/LoginPage';
+import PhoneBookPage from './pages/PhoneBookPage';
+import Container from './components/Container';
+import AppBar from './components/UserMenu/AppBar';
+
+// import s from './App.module.css';
 
 class App extends Component {
   componentDidMount() {
@@ -14,15 +22,15 @@ class App extends Component {
 
   render() {
     return (
-      <div className={s.container}>
-        <h1 className={s.mainTitle}>Phonebook</h1>
-        <ContactForm />
-
-        <h2 className={s.secondaryTitle}>Contacts</h2>
-
-        <Filter />
-        <ContactList />
-      </div>
+      <Container>
+        <AppBar />
+        <Switch>
+          <Route exact path="/" component={HomePage} />
+          <Route exact path="/register" component={RegisterPage} />
+          <Route exact path="/login" component={LoginPage} />
+          <Route exact path="/contacts" component={PhoneBookPage} />
+        </Switch>
+      </Container>
     );
   }
 }

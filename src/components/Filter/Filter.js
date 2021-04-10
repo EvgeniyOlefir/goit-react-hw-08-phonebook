@@ -1,8 +1,8 @@
 import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { connect } from 'react-redux';
-import * as actions from '../../redux/actions';
-import selectors from '../../redux/selectors';
+import * as actions from '../../redux/phonebook/phonebook-actions';
+import selectors from '../../redux/phonebook/phonebook-selectors';
 import s from './Filter.module.css';
 
 const ContactFilter = ({ value, onInputChange }) => {
