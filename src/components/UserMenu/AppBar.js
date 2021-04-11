@@ -6,7 +6,7 @@ const styles = {
   header: {
     display: 'flex',
     justifyContent: 'space-between',
-    alignItem: 'center',
+    alignItems: 'center',
     borderBottom: '1px solid #2A363B',
   },
 };
