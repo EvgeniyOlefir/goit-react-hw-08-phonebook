@@ -30,15 +30,6 @@ class App extends Component {
           <Route exact path="/phonebook" component={PhoneBookPage} />
         </Switch>
       </Container>
-      // <div className={s.container}>
-      //   <h1 className={s.mainTitle}>Phonebook</h1>
-      //   <ContactForm />
-
-      //   <h2 className={s.secondaryTitle}>Contacts</h2>
-
-      //   <Filter />
-      //   <ContactList />
-      // </div>
     );
   }
 }
