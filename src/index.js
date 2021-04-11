@@ -3,6 +3,8 @@ import { BrowserRouter } from 'react-router-dom';
 import ReactDOM from 'react-dom';
 import store from './redux/store';
 import App from './App';
+import './styles/base.scss';
+import 'modern-normalize/modern-normalize.css';
 import { Provider } from 'react-redux';
 
 ReactDOM.render(
