@@ -19,7 +19,17 @@ const token = {
  * После успешной регистрации добавляем токен в HTTP-заголовок
  */
 
-const register = credentials => dispatch => {};
+const register = credentials => async dispatch => {
+  dispatch(authActions.registerRequest());
+
+  try {
+    const response = await axios.post('/users/signup', credentials);
+
+    dispatch(authActions.registerSuccess(response.data));
+  } catch (error) {
+    dispatch(authActions.registerError(error));
+  }
+};
 
 /*
  * POST @ /users/login
