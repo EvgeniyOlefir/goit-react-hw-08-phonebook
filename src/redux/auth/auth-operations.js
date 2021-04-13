@@ -20,11 +20,21 @@ const register = credentials => async dispatch => {
 
     dispatch(authActions.registerSuccess(data));
   } catch (error) {
-    dispatch(authActions.registerError(error));
+    dispatch(authActions.registerError(error.message));
   }
 };
 
-const login = credentials => dispatch => {};
+const login = credentials => async dispatch => {
+  dispatch(authActions.loginRequest());
+
+  try {
+    const response = await axios.post('/users/login', credentials);
+
+    dispatch(authActions.loginSuccess(response.data));
+  } catch (error) {
+    dispatch(authActions.loginError(error.message));
+  }
+};
 
 /*
  * POST @ /users/logout

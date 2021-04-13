@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import { authOperations } from '../redux/auth';
+import { authOperations } from '../redux/auth';
 
 const styles = {
   form: {
@@ -70,8 +70,8 @@ class LoginPage extends Component {
   }
 }
 
-// const mapDispatchToProps = {
-//   onLogin: authOperations.logIn,
-// };
+const mapDispatchToProps = {
+  onLogin: authOperations.login,
+};
 
-export default LoginPage;
+export default connect(null, mapDispatchToProps)(LoginPage);
