@@ -4,7 +4,9 @@ import authActions from './auth-actions';
 
 const initialUserState = { name: null, email: null };
 
-const user = createReducer(initialUserState, {});
+const user = createReducer(initialUserState.user, {
+  [authActions.registerSuccess]: (_, { payload }) => payload.user,
+});
 
 const token = createReducer(null, {});
 

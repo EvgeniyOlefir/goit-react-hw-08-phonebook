@@ -15,9 +15,9 @@ import AppBar from './components/UserMenu/AppBar';
 import { Route, Switch } from 'react-router';
 
 class App extends Component {
-  componentDidMount() {
-    this.props.fetchContacts();
-  }
+  // componentDidMount() {
+  //   this.props.fetchContacts();
+  // }
 
   render() {
     return (
