@@ -8,6 +8,10 @@ export const addContactRequest = createAction('contacts/addContactRequest');
 export const addContactSucces = createAction('contacts/addContactSucces');
 export const addContactError = createAction('contacts/addContactError');
 
+export const updateContactRequest = createAction('contacts/UpdateRequest');
+export const updateContactSuccess = createAction('contacts/UpdateSucces');
+export const updateContactError = createAction('contacts/UpdateError');
+
 export const deleteContactRequest = createAction(
   'contacts/deleteContactRequest',
 );
