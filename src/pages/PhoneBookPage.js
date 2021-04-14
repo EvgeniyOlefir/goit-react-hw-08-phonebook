@@ -16,9 +16,9 @@ class PhoneBookPage extends Component {
     error: PropTypes.string,
   };
 
-  // componentDidMount() {
-  //   this.props.fetchContacts();
-  // }
+  componentDidMount() {
+    this.props.fetchContacts();
+  }
 
   render() {
     return (
