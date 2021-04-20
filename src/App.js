@@ -1,47 +1,47 @@
-import React, { Component } from 'react';
+import React, { Suspense, lazy, Component } from 'react';
+import { Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-// import ContactForm from './components/ContactForm';
-// import ContactList from './components/ContactList';
-// import Filter from './components/Filter/index';
-import operations from './redux/phonebook/phonebook-operations';
-import selectors from './redux/phonebook/phonebook-selectors';
-import HomePage from './pages/HomePage';
-import RegisterPage from './pages/RegisterPage';
-import LoginPage from './pages/LoginPage';
-import PhoneBookPage from './pages/PhoneBookPage';
-import Container from './components/Container';
-import AppBar from './components/UserMenu/AppBar';
-
-import { Route, Switch } from 'react-router';
-
+import Preloader from './components/Preloader/Preloader';
+import Modal from './components/Modal/Modal';
+import { authOperations, authSelectors } from './redux/auth/';
+import routesData from './routes';
+import AppBar from './components/AppBar/AppBar';
+import PrivateRoute from './components/PrivateRoute';
+import PublicRoute from './components/PublicRoute';
 class App extends Component {
-  // componentDidMount() {
-  //   this.props.fetchContacts();
-  // }
-
+  componentDidMount() {
+    this.props.onGetCurrentUser();
+  }
   render() {
     return (
-      <Container>
+      <>
         <AppBar />
-        <Switch>
-          <Route exact path="/" component={HomePage} />
-          <Route exact path="/register" component={RegisterPage} />
-          <Route exact path="/login" component={LoginPage} />
-          <Route exact path="/phonebook" component={PhoneBookPage} />
-        </Switch>
-      </Container>
+        <Suspense
+          fallback={
+            <Modal>
+              <Preloader />
+            </Modal>
+          }
+        >
+          <Switch>
+            {routesData.routes.map(route =>
+              route.private ? (
+                <PrivateRoute key={route.name} {...route} />
+              ) : (
+                <PublicRoute key={route.name} {...route} />
+              ),
+            )}
+            <Redirect to={routesData.pathes.homePage} />
+          </Switch>
+        </Suspense>
+      </>
     );
   }
 }
 
-const mapStateToProps = state => ({
-  contacts: selectors.getAllContacts(state),
-  isLoadingContacts: selectors.getLoading(state),
-  error: selectors.getError(state),
-});
+const mapDispatchToProps = {
+  onGetCurrentUser: authOperations.getCurrentUser,
+  token: authSelectors.getToken,
+};
 
-const mapDispatchToProps = dispatch => ({
-  fetchContacts: () => dispatch(operations.fetchContacts()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(null, mapDispatchToProps)(App);

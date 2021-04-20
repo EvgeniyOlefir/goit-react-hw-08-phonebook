@@ -1,16 +1,15 @@
-.filter {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 30px;
-}
-.filterLabel {
-  font-weight: bold;
-  margin-right: 10px;
+.inputWrapper {
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 12px 14px 41px -4px rgba(0, 0, 0, 0.78);
 }
 
+.filterLabel {
+  display: flex;
+  flex-direction: column;
+  font-style: italic;
+}
 .filterInput {
-  width: 200px;
-  margin-bottom: 20px;
+  margin-top: 10px;
+  outline: none;
 }

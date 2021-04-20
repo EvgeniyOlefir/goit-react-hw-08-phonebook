@@ -1,36 +1,54 @@
-import React from 'react';
-import { v4 as uuidv4 } from 'uuid';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import * as actions from '../../redux/phonebook/phonebook-actions';
-import selectors from '../../redux/phonebook/phonebook-selectors';
-import s from './Filter.module.css';
+import { CSSTransition } from 'react-transition-group';
+import { changeFilter } from '../../redux/phonebook/phoneBook-actions';
+import styles from './Filter.module.css';
+import filterTransitionStyles from '../../transitionStyles/filterTransition.module.css';
+import {
+  getFilter,
+  getContactsLength,
+} from '../../redux/phoneBook/phoneBook-selectors';
 
-const ContactFilter = ({ value, onInputChange }) => {
-  const id = uuidv4();
+function Filter({ initialValue, contactsLength, onFilterChange }) {
   return (
-    <div className={s.filter}>
-      <label className={s.filterLabel} htmlFor={id}>
-        Find contact by name
-      </label>
-      <input
-        className={s.filterInput}
-        id={id}
-        type="text"
-        name="filter"
-        value={value}
-        onChange={onInputChange}
-      />
-    </div>
+    <CSSTransition
+      in={contactsLength > 1}
+      classNames={filterTransitionStyles}
+      timeout={250}
+      unmountOnExit
+    >
+      <div className={styles.inputWrapper}>
+        <label className={styles.filterLabel}>
+          Find contacts by name:
+          <input
+            className={styles.filterInput}
+            type="text"
+            name="name"
+            value={initialValue}
+            onChange={e => onFilterChange(e.target.value)}
+          />
+        </label>
+      </div>
+    </CSSTransition>
   );
-};
+}
 
 const mapStateToProps = state => ({
-  value: selectors.getFilter(state),
-  contacts: selectors.getAllContacts(state),
+  initialValue: getFilter(state),
+  contactsLength: getContactsLength(state),
 });
 
-const mapDispatchToProps = dispatch => ({
-  onInputChange: e => dispatch(actions.changeFilter(e.target.value)),
-});
+const mapDispatchToProps = {
+  onFilterChange: changeFilter,
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(ContactFilter);
+export default connect(mapStateToProps, mapDispatchToProps)(Filter);
+
+Filter.defaultProps = {
+  initialValue: '',
+};
+Filter.propTypes = PropTypes.shape({
+  initialValue: PropTypes.string,
+  contactsLength: PropTypes.number.isRequired,
+  onFilterChange: PropTypes.func.isRequired,
+}).isRequired;

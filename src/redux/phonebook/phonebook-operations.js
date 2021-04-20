@@ -1,46 +1,47 @@
 import axios from 'axios';
 import {
-  fetchContactRequest,
-  fetchContactSuccess,
-  fetchContactError,
+  fetchContactsRequest,
+  fetchContactsSuccess,
+  fetchContactsError,
   addContactRequest,
-  addContactSucces,
+  addContactSuccess,
   addContactError,
   updateContactRequest,
   updateContactSuccess,
   updateContactError,
   deleteContactRequest,
-  deleteContactSucces,
+  deleteContactSuccess,
   deleteContactError,
-} from './phonebook-actions';
+  errorRemover,
+} from './phoneBook-actions';
+
+const resetError = dispatch =>
+  setTimeout(() => dispatch(errorRemover(null)), 3000);
 
 axios.defaults.baseURL = 'https://goit-phonebook-api.herokuapp.com';
 
 const fetchContacts = () => async dispatch => {
-  dispatch(fetchContactRequest());
+  dispatch(fetchContactsRequest());
 
   try {
     const { data } = await axios.get('/contacts');
-    return dispatch(fetchContactSuccess(data));
+    return dispatch(fetchContactsSuccess(data));
   } catch (error) {
-    dispatch(fetchContactError(error.message));
+    dispatch(fetchContactsError(error.message));
+    resetError(dispatch);
   }
-
-  // axios
-  //   .get('/contacts')
-  //   .then(({ data }) => dispatch(fetchContactSuccess(data)))
-  //   .catch(error => dispatch(fetchContactError(error.message)));
 };
 
-const addContact = (name, number) => dispatch => {
-  const contact = { name, number };
-
+const addContact = contactObj => async dispatch => {
   dispatch(addContactRequest());
 
-  axios
-    .post('/contacts', contact)
-    .then(({ data }) => dispatch(addContactSucces(data)))
-    .catch(error => dispatch(addContactError(error.message)));
+  try {
+    const { data } = await axios.post('/contacts', contactObj);
+    return dispatch(addContactSuccess(data));
+  } catch (error) {
+    dispatch(addContactError(error.message));
+    resetError(dispatch);
+  }
 };
 
 const updateContact = contactObj => async dispatch => {
@@ -51,23 +52,20 @@ const updateContact = contactObj => async dispatch => {
     return dispatch(updateContactSuccess(data));
   } catch (error) {
     dispatch(updateContactError(error.message));
+    resetError(dispatch);
   }
 };
 
-const deleteContact = contactId => dispatch => {
+const deleteContact = contactId => async dispatch => {
   dispatch(deleteContactRequest());
 
-  axios
-    .delete(`/contacts/${contactId}`)
-    .then(() => dispatch(deleteContactSucces(contactId)))
-    .catch(error => dispatch(deleteContactError(error.message)));
+  try {
+    await axios.delete(`/contacts/${contactId}`);
+    return dispatch(deleteContactSuccess(contactId));
+  } catch (error) {
+    dispatch(deleteContactError(error.message));
+    resetError(dispatch);
+  }
 };
 
-const operations = {
-  fetchContacts,
-  addContact,
-  updateContact,
-  deleteContact,
-};
-
-export default operations;
+export default { addContact, updateContact, deleteContact, fetchContacts };

@@ -1,101 +1,105 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { connect } from 'react-redux';
-import operations from '../../redux/phonebook/phonebook-operations';
-import selectors from '../../redux/phonebook/phonebook-selectors';
-import PropTypes from 'prop-types';
+import { Formik, Form, Field } from 'formik';
+import { TextField } from 'formik-material-ui';
+import { Button } from '@material-ui/core';
+import * as yup from 'yup';
+import phonebookOperations from '../../redux/phonebook/phoneBook-operations';
+import styles from './ContactForm.module.css';
+import Notification from '../Notification/Notification';
+import {
+  getAllContacts,
+  getErrorMessage,
+} from '../../redux/phoneBook/phoneBook-selectors';
 
-import s from './ContactForm.module.css';
+const validationSchema = yup.object({
+  name: yup.string().required("Enter contact's name"),
+  number: yup
+    .string()
+    .length(10, 'Example: 0930939393')
+    .required("Enter contact's phone"),
+});
 
 class ContactForm extends Component {
-  state = {
-    name: '',
-    number: '',
-  };
+  state = { isContactExists: false };
 
-  static propTypes = {
-    contacts: PropTypes.arrayOf(PropTypes.object),
-    onSubmit: PropTypes.func,
-  };
+  handleSubmit = contactObj => {
+    if (this.props.contacts.some(({ name }) => name === contactObj.name)) {
+      this.setState({ isContactExists: true });
+      setTimeout(() => {
+        this.setState({ isContactExists: false });
+      }, 3000);
 
-  handleChange = e => {
-    const { name, value } = e.target;
-    this.setState({ [name]: value });
-  };
-
-  handleSubmit = e => {
-    const { name, number } = this.state;
-    e.preventDefault();
-
-    if (name === '') {
-      alert('Enter contact name, please!');
       return;
     }
-    if (number === '') {
-      alert('Enter concact phone, please!');
-      return;
-    }
-    if (
-      this.props.contacts.find(
-        item => item.name.toLowerCase() === name.toLowerCase(),
-      )
-    ) {
-      alert('Contact already exists!');
-      return;
-    }
+    this.props.addContact(contactObj);
 
-    this.props.onSubmit(name, number);
-    this.setState({
-      name: '',
-      number: '',
-    });
+    return this.setState({ isContactExists: false });
   };
 
   render() {
-    const { name, number } = this.state;
-
+    const { isContactExists } = this.state;
     return (
       <>
-        <form className={s.contactForm} onSubmit={this.handleSubmit}>
-          <label className={s.contactLabel} htmlFor={name}>
-            Name
-          </label>
-          <input
-            className={s.contactInput}
-            type="text"
-            name="name"
-            id="name"
-            value={name}
-            onChange={this.handleChange}
-          />
+        <Notification
+          notificationInit={isContactExists}
+          message="This contact already exists in your phonebook."
+        />
+        <Notification
+          notificationInit={Boolean(this.props.errorMessage)}
+          message={this.props.errorMessage}
+        />
+        <Formik
+          initialValues={{ name: '', number: '' }}
+          validationSchema={validationSchema}
+          onSubmit={({ name, number }, { resetForm, setSubmitting }) => {
+            this.handleSubmit({ name, number });
+            setSubmitting(false);
+            resetForm();
+          }}
+        >
+          <Form className={styles.contactForm}>
+            <Field
+              component={TextField}
+              type="text"
+              name="name"
+              label="Name:"
+              variant="outlined"
+              margin="dense"
+            />
 
-          <label className={s.contactLabel} htmlFor={number}>
-            Number
-          </label>
-          <input
-            className={s.contactInput}
-            type="text"
-            name="number"
-            id="number"
-            value={number}
-            onChange={this.handleChange}
-            // required
-          />
+            <Field
+              component={TextField}
+              type="tel"
+              name="number"
+              label="Number:"
+              variant="outlined"
+              margin="dense"
+            />
 
-          <button className={s.buttonAdd} type="submit">
-            Add contact
-          </button>
-        </form>
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              size="medium"
+            >
+              Add new contact
+            </Button>
+          </Form>
+        </Formik>
       </>
     );
   }
 }
 
 const mapStateToProps = state => ({
-  contacts: selectors.getAllContacts(state),
+  contacts: getAllContacts(state),
+  errorMessage: getErrorMessage(state),
 });
 
 const mapDispatchToProps = dispatch => ({
-  onSubmit: (name, number) => dispatch(operations.addContact(name, number)),
+  addContact: contactObj =>
+    dispatch(phonebookOperations.addContact(contactObj)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContactForm);

@@ -1,39 +1,41 @@
-import ContactListItem from './ContactListItem';
-import { connect } from 'react-redux';
-import operations from '../../redux/phonebook/phonebook-operations';
-import selectors from '../../redux/phonebook/phonebook-selectors';
 import PropTypes from 'prop-types';
-import s from './ContactList.module.css';
+import { connect } from 'react-redux';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import styles from './ContactList.module.css';
+import contactListTransition from '../../transitionStyles/contactListTransition.module.css';
+import ContactListItem from '../ContactListItem/ContactListItem';
+import { getVisibleContacts } from '../../redux/phoneBook/phoneBook-selectors';
 
-const ContactList = ({ contacts, onDeleteContact }) => {
+function ContactList({ contacts }) {
   return (
     <>
-      <ul className={s.contactList}>
-        {contacts.map(({ id, name, number }) => (
-          <ContactListItem
-            key={id}
-            id={id}
-            name={name}
-            number={number}
-            onDeleteContact={onDeleteContact}
-          />
-        ))}
-      </ul>
+      <CSSTransition
+        in={contacts.length > 0}
+        appear={true}
+        classNames={contactListTransition}
+        timeout={500}
+        unmountOnExit
+      >
+        <TransitionGroup component="ul" className={styles.contactsList}>
+          {contacts.map((contact, idx) => (
+            <CSSTransition
+              key={contact.id}
+              classNames={contactListTransition}
+              timeout={250}
+            >
+              <ContactListItem idx={idx} contact={contact} />
+            </CSSTransition>
+          ))}
+        </TransitionGroup>
+      </CSSTransition>
     </>
   );
-};
+}
+
+const mapStateToProps = state => ({ contacts: getVisibleContacts(state) });
+
+export default connect(mapStateToProps, null)(ContactList);
 
 ContactList.propTypes = {
-  onDeleteContact: PropTypes.func,
-  contacts: PropTypes.arrayOf(PropTypes.object),
+  contacts: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
-
-const mapStateToProps = state => ({
-  contacts: selectors.getVisibleContacts(state),
-});
-
-const mapDispatchToProps = dispatch => ({
-  onDeleteContact: id => dispatch(operations.deleteContact(id)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ContactList);

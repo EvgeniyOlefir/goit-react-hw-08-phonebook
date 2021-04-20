@@ -1,23 +1,21 @@
 import { createAction } from '@reduxjs/toolkit';
+import types from './phoneBook-constants';
 
-export const fetchContactRequest = createAction('contacts/fetchContactRequest');
-export const fetchContactSuccess = createAction('contacts/fetchContactSuccess');
-export const fetchContactError = createAction('contacts/fetchContactError');
+export const fetchContactsRequest = createAction(types.fetchRequest);
+export const fetchContactsSuccess = createAction(types.fetchSuccess);
+export const fetchContactsError = createAction(types.fetchError);
 
-export const addContactRequest = createAction('contacts/addContactRequest');
-export const addContactSucces = createAction('contacts/addContactSucces');
-export const addContactError = createAction('contacts/addContactError');
+export const addContactRequest = createAction(types.addRequest);
+export const addContactSuccess = createAction(types.addSuccess);
+export const addContactError = createAction(types.addError);
 
-export const updateContactRequest = createAction('contacts/UpdateRequest');
-export const updateContactSuccess = createAction('contacts/UpdateSucces');
-export const updateContactError = createAction('contacts/UpdateError');
+export const updateContactRequest = createAction(types.updateRequest);
+export const updateContactSuccess = createAction(types.updateSuccess);
+export const updateContactError = createAction(types.updateError);
 
-export const deleteContactRequest = createAction(
-  'contacts/deleteContactRequest',
-);
-export const deleteContactSucces = createAction('contacts/deleteContactSucces');
-export const deleteContactError = createAction('contacts/deleteContactError');
+export const deleteContactRequest = createAction(types.deleteRequest);
+export const deleteContactSuccess = createAction(types.deleteSuccess);
+export const deleteContactError = createAction(types.deleteError);
 
-export const changeFilter = createAction('contacts/Filter');
-
-export const clearError = createAction('contacts/clearError');
+export const changeFilter = createAction(types.changeFilter);
+export const errorRemover = createAction(types.errorRemove);
