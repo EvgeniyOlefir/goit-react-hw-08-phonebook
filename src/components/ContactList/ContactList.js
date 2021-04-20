@@ -4,7 +4,7 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import styles from './ContactList.module.css';
 import contactListTransition from '../../transitionStyles/contactListTransition.module.css';
 import ContactListItem from '../ContactListItem/ContactListItem';
-import { getVisibleContacts } from '../../redux/phoneBook/phoneBook-selectors';
+import { getVisibleContacts } from '../../redux/phonebook/phoneBook-selectors';
 
 function ContactList({ contacts }) {
   return (

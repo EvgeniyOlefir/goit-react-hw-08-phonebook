@@ -17,7 +17,7 @@ import {
   getAllContacts,
   getErrorMessage,
   getLoading,
-} from '../../redux/phoneBook/phoneBook-selectors';
+} from '../../redux/phonebook/phoneBook-selectors';
 import { authSelectors } from '../../redux/auth';
 
 const validationSchema = yup.object({

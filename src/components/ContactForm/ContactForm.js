@@ -10,7 +10,7 @@ import Notification from '../Notification/Notification';
 import {
   getAllContacts,
   getErrorMessage,
-} from '../../redux/phoneBook/phoneBook-selectors';
+} from '../../redux/phonebook/phoneBook-selectors';
 
 const validationSchema = yup.object({
   name: yup.string().required("Enter contact's name"),

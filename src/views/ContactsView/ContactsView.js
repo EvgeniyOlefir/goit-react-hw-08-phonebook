@@ -12,7 +12,7 @@ import phonebookOperations from '../../redux/phonebook/phoneBook-operations';
 import {
   getAllContacts,
   getLoading,
-} from '../../redux/phoneBook/phoneBook-selectors';
+} from '../../redux/phonebook/phoneBook-selectors';
 import { authSelectors } from '../../redux/auth';
 
 class ContactsView extends Component {

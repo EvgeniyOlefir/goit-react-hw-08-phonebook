@@ -7,7 +7,7 @@ import filterTransitionStyles from '../../transitionStyles/filterTransition.modu
 import {
   getFilter,
   getContactsLength,
-} from '../../redux/phoneBook/phoneBook-selectors';
+} from '../../redux/phonebook/phoneBook-selectors';
 
 function Filter({ initialValue, contactsLength, onFilterChange }) {
   return (
