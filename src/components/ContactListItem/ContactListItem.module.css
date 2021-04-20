@@ -15,7 +15,7 @@
 
 .odd {
   composes: listItem;
-  background-color: rgb(255, 211, 211);
+  /* background-color: rgb(255, 211, 211); */
 }
 
 .deleteButton {
