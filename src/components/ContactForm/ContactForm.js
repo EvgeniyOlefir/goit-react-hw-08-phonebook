@@ -43,7 +43,7 @@ class ContactForm extends Component {
       <>
         <Notification
           notificationInit={isContactExists}
-          message="This contact already exists in your phonebook."
+          message="This contact already exists in your phonebook"
         />
         <Notification
           notificationInit={Boolean(this.props.errorMessage)}
